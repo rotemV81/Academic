@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="47f3134d-c99c-4699-93f3-34340db12460" name="localhost" url="/host_root">
+        <fileTransfer rootFolder="/home/rotem" accessType="SFTP" host="shamus.local" port="6080" sshConfigId="aaf9bae0-4c07-44f2-bac8-824a3e5d00f9" sshConfig="rotem@shamus.local:6080 agent" authAgent="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="b8a66c1e-b0b1-4cca-8bf8-8813a663b9c7" name="rotem@shamus.local:6080" url="/host_root">
+        <fileTransfer rootFolder="/home/rotem" accessType="SFTP" host="shamus.local" port="6080" sshConfigId="aaf9bae0-4c07-44f2-bac8-824a3e5d00f9" sshConfig="rotem@shamus.local:6080 agent" authAgent="true" />
+      </webServer>
+    </option>
+  </component>
+</project>
