@@ -25,7 +25,8 @@ import scipy as sp
 
 from sklearn import metrics
 
-# [Rotem]: original was: from sklearn.metrics.classification import (_check_targets, _prf_divide, precision_recall_fscore_support)
+# [Rotem]: original import was:
+# from sklearn.metrics.classification import (_check_targets, _prf_divide, precision_recall_fscore_support)
 from sklearn.metrics._classification import (_check_targets, _prf_divide, precision_recall_fscore_support)
 
 from sklearn.preprocessing import LabelEncoder
@@ -756,4 +757,3 @@ def make_index_balanced_accuracy(alpha=0.1, squared=True):
         return compute_score
 
     return decorate
-

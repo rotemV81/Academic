@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created on Wed Oct 10 17:04:18 2018
 
@@ -17,23 +16,31 @@ def creat_class_name(classNumber):
     return number
 
 
-def report_precision_se_sp_yi(y_predicitions,  groundture):
-    class_list1 = np.unique(groundture)
+def report_metrics(predicition, ground_truth):
+    class_list = np.unique(ground_truth)
     Result = []
-    SE, SP, _ = sensitivity_specificity_support(groundture, y_predicitions)
+
+    # Calculate sensitivity (True Positive Rate) and specificity (True Negative Rate)
+    SE, SP, _ = sensitivity_specificity_support(ground_truth, predicition)
+
+    # Youden's Index
     YI = SE + SP - 1
-    for i in range(class_list1.shape[0]):
-        local_1 = [k for k in range(len(y_predicitions)) if y_predicitions[k]==class_list1[i]]
-        y_pred1 = [y_predicitions[k] for k in local_1]
-        y_true1 = [groundture[k] for k in local_1]
+
+    for i in range(class_list.shape[0]):
+        local_1 = [k for k in range(len(predicition)) if predicition[k] == class_list[i]]
+        y_pred1 = [predicition[k] for k in local_1]
+        y_true1 = [ground_truth[k] for k in local_1]
         pre = accuracy_score(y_true1,y_pred1)
         Result.append([pre,SE[i],SP[i],YI[i]])
-    AVE_ACC = accuracy_score(groundture,y_predicitions)
+
+    AVE_ACC = accuracy_score(ground_truth, predicition)
     AVE_Pre = np.mean(Result,0)[0]
-    AVE_SE = sensitivity_score(groundture,y_predicitions,average='macro')
-    AVE_SP = specificity_score(groundture,y_predicitions,average='macro')
+    AVE_SE = sensitivity_score(ground_truth, predicition, average='macro')
+    AVE_SP = specificity_score(ground_truth, predicition, average='macro')
     AVE_YI = AVE_SE+AVE_SP-1
+
     Result.append([AVE_Pre,AVE_SE,AVE_SP,AVE_YI])
+
     target_names = creat_class_name(len(Result)-1)
     last_line_heading = 'avg / total'
     name_width = max(len(cn) for cn in target_names)
@@ -46,6 +53,7 @@ def report_precision_se_sp_yi(y_predicitions,  groundture):
     fmt += '\n'
     headers = [""] + headers
     report = fmt % tuple(headers)
+
     for i in range(len(Result)):
         fmt1 = '%% %ds' % width
         fmt1 += " "
@@ -56,6 +64,7 @@ def report_precision_se_sp_yi(y_predicitions,  groundture):
             values+=["{0:0.{1}f}".format(j, 4)]
         tmp = fmt1%tuple([target_names[i]]+values)
         report+=tmp
+
     head = ['AVE_ACC']
     fmt1 = '%% %ds' % width
     fmt1 += " "
@@ -65,7 +74,7 @@ def report_precision_se_sp_yi(y_predicitions,  groundture):
     value = ["{0:0.{1}f}".format(AVE_ACC, 4)]
     report += fmt1%tuple(["",'AVE_ACC','']+value)
     report += '\n'
-    # print(report)
+
     return Result, AVE_ACC, report
 
 def report_mae_mse(y_ture, y_predicitions,classification):
@@ -112,6 +121,6 @@ def report_mae_mse(y_ture, y_predicitions,classification):
         values += ["{0:0.{1}f}".format(j, 4)]
     tmp = fmt1 % tuple([target_name[i]] + values)
     report += tmp
-    # print(report)
+
     return Result, MAE, MSE, report
 

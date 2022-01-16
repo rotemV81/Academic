@@ -22,7 +22,7 @@
 import numpy as np
 import os
 import time
-from utils.report import report_precision_se_sp_yi
+from utils.report import report_metrics
 from utils.utils import Logger
 import warnings
 
@@ -115,7 +115,7 @@ for i in range(3):
         y_true = labels_train_test[np.array([imgs_train_test.tolist().index(j) for j in imgs])]
         y_pred = preds
 
-        Result, AVE_ACC_, pre_se_sp_yi_report = report_precision_se_sp_yi(y_pred, y_true)
+        Result, AVE_ACC_, pre_se_sp_yi_report = report_metrics(y_pred, y_true)
 
         Precision_, SE_, SP_, YI_ = Result[4]
         AVE_ACC.append(AVE_ACC_)
