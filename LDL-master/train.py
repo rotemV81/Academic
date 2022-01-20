@@ -146,7 +146,7 @@ def trainval_test(cross_val_index, sigma, lam):
             # train
             cnn.train()
 
-            cls, cou, cou2cls = cnn(b_x, None)nn output
+            cls, cou, cou2cls = cnn(b_x, None)
             loss_cls = kl_loss_1(torch.log(cls), ld_4) * 4.0
             loss_cou = kl_loss_2(torch.log(cou), ld) * 65.0
             loss_cls_cou = kl_loss_3(torch.log(cou2cls), ld_4) * 4.0
