@@ -27,8 +27,7 @@ np.random.seed(42)
 
 # Hyper Parameters
 LR              = 0.001                 # learning rate
-NUM_WORKERS     = 12
-NUM_CLASSES     = 4
+NUM_WORKERS     = 6
 lr_steps        = [30, 60, 90, 120]     # adjust the learning rate at these epoch
 
 LOG_DIR   = '/host_root/home/rotem/Private/Academic/LDL-rotem/logs'
@@ -135,55 +134,57 @@ def trainval_test(cross_val_index, sigma, lamda):
         log.write(message)
 
         # Evaluate after each epoch starting from epoch number 9
-        if epoch >= 9:
+        if epoch >= 0:
 
             with torch.no_grad():
                 test_loss     = 0
                 severity_hits = 0
 
-                y_true   = np.array([])
-                y_pred   = np.array([])
-                y_pred_m = np.array([])
-                l_true   = np.array([])
-                l_pred   = np.array([])
+                true_classes = np.array([])
+                pred_classes = np.array([])
+
+                true_counts = np.array([])
+                pred_counts = np.array([])
+
+                pred_classes_m = np.array([])
 
                 # Sets the model in evaluation mode
                 cnn.eval()
 
-                for step, (test_images, test_classes, test_lesions) in enumerate(test_loader):   # gives batch data, normalize x when iterate train_loader
+                for step, (batch_images, batch_classes, batch_counts) in enumerate(test_loader):   # gives batch data, normalize x when iterate train_loader
 
-                    test_images  = test_images.cuda()
-                    test_classes = test_classes.cuda()
+                    batch_images  = batch_images.cuda()
+                    batch_classes = batch_classes.cuda()
 
-                    y_true = np.hstack((y_true, test_classes.data.cpu().numpy()))
-                    l_true = np.hstack((l_true, test_lesions.data.cpu().numpy()))
+                    true_classes = np.hstack((true_classes, batch_classes.data.cpu().numpy()))
+                    true_counts = np.hstack((true_counts, batch_counts.data.cpu().numpy()))
 
                     cnn.eval() # TODO: is this required in each iteration?
 
-                    cls, cnt, cnt2cls = cnn(test_images, None)
+                    cls, cnt, cnt2cls = cnn(batch_images, None)
 
-                    loss = loss_func(cnt2cls, test_classes)
+                    loss = loss_func(cnt2cls, batch_classes)
                     test_loss += loss.data
 
-                    _, preds   = torch.max(cls, 1)              # predicted severity distributions
-                    _, preds_m = torch.max(cls + cnt2cls, 1)    # predicted severity distributions, plus "severity-from-count" distributions
+                    _, pred_class  = torch.max(cls, 1)              # predicted severities
+                    pred_classes = np.hstack((pred_classes, pred_class.data.cpu().numpy()))
 
-                    y_pred   = np.hstack((y_pred, preds.data.cpu().numpy()))
-                    y_pred_m = np.hstack((y_pred_m, preds_m.data.cpu().numpy()))
+                    _, pred_class_m = torch.max(cls + cnt2cls, 1)    # predicted severities based on sum of severity estimate and severity-from-count
+                    pred_classes_m  = np.hstack((pred_classes_m, pred_class_m.data.cpu().numpy()))
 
-                    _, preds_l = torch.max(cnt, 1)
-                    preds_l = (preds_l + 1).data.cpu().numpy()
-                    l_pred = np.hstack((l_pred, preds_l))
+                    _, pred_count = torch.max(cnt, 1)
+                    pred_count = (pred_count + 1).data.cpu().numpy()
+                    pred_counts = np.hstack((pred_counts, pred_count))
 
-                    severity_hits += torch.sum((preds == test_classes)).data.cpu().numpy()
+                    severity_hits += torch.sum((pred_class == batch_classes)).data.cpu().numpy()
 
-                _, _, report = report_metrics(y_pred, y_true)
+                _, _, report = report_metrics(pred_classes, true_classes)
                 log.write(str(report) + '\n')
 
-                _, _, report_m = report_metrics(y_pred_m, y_true)
+                _, _, report_m = report_metrics(pred_classes_m, true_classes)
                 log.write(str(report_m) + '\n')
 
-                _, _, _, mae_mse_report = report_mae_mse(l_true, l_pred, y_true)
+                _, _, _, mae_mse_report = report_mae_mse(true_counts, pred_counts, true_classes)
                 log.write(str(mae_mse_report) + '\n')
 
     return cnn
