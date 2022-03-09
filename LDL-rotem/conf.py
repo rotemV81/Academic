@@ -1,8 +1,6 @@
 from torchvision import transforms
 from transforms.affine_transforms import RandomRotate
 
-# Default number of workers
-NUM_WORKERS = 6
 
 # Default train batch size
 BATCH_SIZE_TR = 2
