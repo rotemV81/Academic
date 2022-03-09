@@ -166,15 +166,13 @@ def trainval_test(cross_val_index, sigma, lamda):
                     loss = loss_func(cnt2cls, batch_classes)
                     test_loss += loss.data
 
-                    _, pred_class  = torch.max(cls, 1)              # predicted severities
-                    pred_classes = np.hstack((pred_classes, pred_class.data.cpu().numpy()))
+                    _, pred_class   = torch.max(cls, 1)             # predicted severities
+                    _, pred_count   = torch.max(cnt, 1)             # Predicted lesion counts
+                    _, pred_class_m = torch.max(cls + cnt2cls, 1)   # predicted severities based on sum of severity estimate and severity-from-count
 
-                    _, pred_class_m = torch.max(cls + cnt2cls, 1)    # predicted severities based on sum of severity estimate and severity-from-count
+                    pred_classes    = np.hstack((pred_classes,   pred_class.data.cpu().numpy()))
+                    pred_counts     = np.hstack((pred_counts,    (pred_count + 1).data.cpu().numpy()))
                     pred_classes_m  = np.hstack((pred_classes_m, pred_class_m.data.cpu().numpy()))
-
-                    _, pred_count = torch.max(cnt, 1)
-                    pred_count = (pred_count + 1).data.cpu().numpy()
-                    pred_counts = np.hstack((pred_counts, pred_count))
 
                     severity_hits += torch.sum((pred_class == batch_classes)).data.cpu().numpy()
 
