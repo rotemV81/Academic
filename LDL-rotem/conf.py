@@ -3,10 +3,10 @@ from transforms.affine_transforms import RandomRotate
 
 
 # Default train batch size
-BATCH_SIZE_TR = 2
+BATCH_SIZE_TR = 16
 
 # Default test batch size
-BATCH_SIZE_TS = 2
+BATCH_SIZE_TS = 16
 
 # Random seed for reproducibility across all modules of LDL the model
 RANDOM_SEED = 42

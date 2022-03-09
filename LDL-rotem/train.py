@@ -27,7 +27,7 @@ np.random.seed(42)
 
 # Hyper Parameters
 LR              = 0.001                 # learning rate
-NUM_WORKERS     = 6
+NUM_WORKERS     = 12
 lr_steps        = [30, 60, 90, 120]     # adjust the learning rate at these epoch
 
 LOG_DIR   = '/host_root/home/rotem/Private/Academic/LDL-rotem/logs'
