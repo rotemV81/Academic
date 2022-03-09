@@ -48,11 +48,12 @@ def adjust_learning_rate_new(optimizer, decay=0.5):
 
 def trainval_test(cross_val_index, sigma, lamda):
 
-    TRAIN_FILE = '/host_root/fastspace/external_datasets/Acne04/Detection/VOC2007/ImageSets/Main/NNEW_trainval_' + cross_val_index + '.txt'
+    TRAIN_FILE = '/host_root/fastspace/datasets/external/Acne04/Detection/VOC2007/ImageSets/Main/NNEW_trainval_' + cross_val_index + '.txt'
     dset_train = dataset_processing.DatasetProcessing(PATH_IMAGES, TRAIN_FILE, transform=TRANSFORM_TR)
     train_loader = DataLoader(dset_train, batch_size=BATCH_SIZE_TR, shuffle=True, num_workers=NUM_WORKERS, pin_memory=True)
 
-    TEST_FILE = '/host_root/fastspace/external_datasets/Acne04/Detection/VOC2007/ImageSets/Main/NNEW_test_' + cross_val_index + '.txt'
+
+    TEST_FILE = '/host_root/fastspace/datasets/external/Acne04/Detection/VOC2007/ImageSets/Main/NNEW_test_' + cross_val_index + '.txt'
     dset_test = dataset_processing.DatasetProcessing(PATH_IMAGES, TEST_FILE, transform=TRANSFORM_TS)
     test_loader = DataLoader(dset_test, batch_size=BATCH_SIZE_TS, shuffle=False, num_workers=NUM_WORKERS, pin_memory=True)
 

@@ -9,7 +9,7 @@ from sklearn.metrics import accuracy_score
 from .metrics import sensitivity_specificity_support, specificity_score, sensitivity_score
 
 
-def creat_class_name(classNumber):
+def create_class_name(classNumber):
     number = []
     for i in range(classNumber):
         number.append('class'+str(i))
@@ -41,7 +41,7 @@ def report_metrics(predicition, ground_truth):
 
     Result.append([AVE_Pre,AVE_SE,AVE_SP,AVE_YI])
 
-    target_names = creat_class_name(len(Result)-1)
+    target_names = create_class_name(len(Result) - 1)
     last_line_heading = 'avg / total'
     name_width = max(len(cn) for cn in target_names)
     width = max(name_width, len(last_line_heading), 3)
@@ -79,7 +79,7 @@ def report_metrics(predicition, ground_truth):
 
 def report_mae_mse(y_ture, y_predicitions,classification):
     classed = np.unique(classification)
-    target_name = creat_class_name(classed.shape[0])
+    target_name = create_class_name(classed.shape[0])
     target_name.append('avg / total')
     name_width = max(len(cn) for cn in target_name)
     headers = ['MAE','MSE']

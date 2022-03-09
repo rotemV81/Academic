@@ -2,25 +2,25 @@ from torchvision import transforms
 from transforms.affine_transforms import RandomRotate
 
 # Default number of workers
-NUM_WORKERS = 12
+NUM_WORKERS = 6
 
 # Default train batch size
-BATCH_SIZE_TR = 16
+BATCH_SIZE_TR = 2
 
 # Default test batch size
-BATCH_SIZE_TS = 16
+BATCH_SIZE_TS = 2
 
 # Random seed for reproducibility across all modules of LDL the model
 RANDOM_SEED = 42
 
 # Path to 1,457 acne images
-PATH_IMAGES = '/host_root/fastspace/external_datasets/Acne04/Classification/JPEGImages'
+PATH_IMAGES = '/host_root/fastspace/datasets/external/Acne04/Classification/JPEGImages'
 
 # Path to a trained LDL model
 PATH_MODEL = '/host_root/home/rotem/Private/Academic/LDL-rotem/trained_model.npz'
 
 # Path to .txt files with lists of train/test samples
-PATH_IMAGE_SETS = '/host_root/fastspace/external_datasets/Acne04/Detection/VOC2007/ImageSets/Main'
+PATH_IMAGE_SETS = '/host_root/fastspace/datasets/external/Acne04/Detection/VOC2007/ImageSets/Main'
 
 # Init a normalization transform to be applied to tr/ts data
 TRANSFROM_NORMALIZE = transforms.Normalize(mean=[0.45815152, 0.361242, 0.29348266], std=[0.2814769, 0.226306, 0.20132513])
